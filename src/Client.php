@@ -81,25 +81,28 @@ class Client implements AlbyClient
 
   public function addInvoice($invoice): array
   {
-    $params = [ "amount" => $invoice["value"], "description" => $invoice["memo"], "memo" => $invoice["memo"] ];
+    $params = [ "amount" => $invoice["value"], "memo" => $invoice["memo"] ];
     if (array_key_exists("description_hash", $invoice) && !empty($invoice["description_hash"])) {
       $params['description_hash'] = $invoice['description_hash'];
     }
+    if (array_key_exists("unhashed_description", $invoice) && !empty($invoice["unhashed_description"])) {
+      $params['description'] = $invoice['unhashed_description'];
+    }
     $data = $this->request("POST", "/invoices", $params);
     $data["id"] = $data["payment_hash"];
+    $data["r_hash"] = $data["payment_hash"];
     return $data;
   }
 
-  public function getInvoice($paymentHash): array
+  public function getInvoice($rHash): array
   {
-    $invoice = $this->request("GET", "/invoices/{$paymentHash}");
-
+    $invoice = $this->request("GET", "/invoices/{$rHash}");
     return $invoice;
   }
 
-  public function isInvoicePaid($paymentHash): bool
+  public function isInvoicePaid($rHash): bool
   {
-    $invoice = $this->getInvoice($paymentHash);
+    $invoice = $this->getInvoice($rHash);
     return $invoice["settled"];
   }
 }

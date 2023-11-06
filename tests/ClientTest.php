@@ -42,7 +42,7 @@ final class ClientTest extends TestCase
         ]);
         // print_r($response);
         $this->assertIsString($response['payment_request']);
-        $this->assertIsString($response['payment_hash']);
+        $this->assertIsString($response['r_hash']);
     }
 
     public function testCanGetInvoice(): void
@@ -53,7 +53,7 @@ final class ClientTest extends TestCase
             'value' => 23,
             'memo' => 'test invoice'
         ]);
-        $invoice = $client->getInvoice($response['payment_hash']);
+        $invoice = $client->getInvoice($response['r_hash']);
 
         $this->assertArrayHasKey('settled', $invoice);
     }
