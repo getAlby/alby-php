@@ -7,7 +7,7 @@ final class ClientTest extends TestCase
 {
     private function client(): Client
     {
-        $access_token = '';
+        $access_token = 'MMFLN2IXMJMTZWQXZC0ZNTRILWEYMZCTYMQ1NGVKODE0NZU1';
         return new Client($access_token);
     }
     public function testCanBeInitialized(): void
@@ -21,21 +21,18 @@ final class ClientTest extends TestCase
     public function testCanGetBalance(): void
     {
         $client = $this->client();
-        $client->init();
         $this->assertIsNumeric($client->getBalance()['balance']);
     }
 
     public function testCanGetInfo(): void
     {
         $client = $this->client();
-        $client->init();
         $this->assertIsString($client->getInfo()['alias']);
     }
 
     public function testCanAddInvoice(): void
     {
         $client = $this->client();
-        $client->init();
         $response = $client->addInvoice([
             'value' => 23,
             'memo' => 'test invoice'
@@ -48,7 +45,6 @@ final class ClientTest extends TestCase
     public function testCanGetInvoice(): void
     {
         $client = $this->client();
-        $client->init();
         $response = $client->addInvoice([
             'value' => 23,
             'memo' => 'test invoice'
