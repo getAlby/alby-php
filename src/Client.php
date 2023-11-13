@@ -42,12 +42,13 @@ class Client implements AlbyClient
       $headers,
       $requestBody
     );
-    $response = $this->client()->send($request);
-    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+    try {
+      $response = $this->client()->send($request);
       $responseBody = $response->getBody()->getContents();
       return json_decode($responseBody, true);
-    } else {
-      // raise exception
+    } catch (GuzzleHttp\Exception\ClientException $e) {
+      $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+      throw new \Exception($error["error"]);
     }
   }
 
