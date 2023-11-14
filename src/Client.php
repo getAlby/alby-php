@@ -56,6 +56,7 @@ class Client implements AlbyClient
   {
     $data = $this->request("GET", "/user/me");
     $data["alias"] = "🐝 getalby.com";
+    $data["identity_pubkey"] = "";
     return $data;
   }
 
